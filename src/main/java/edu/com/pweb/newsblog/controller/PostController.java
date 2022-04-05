@@ -17,8 +17,10 @@ public class PostController {
     final PostService postService;
 
     @GetMapping("/posts")
-    public List<PostOut> listar() {
-        return postService.listar();
+    public List<PostOut> listar(String titulo) {
+        return postService.findByTituloStartsWith(titulo);
     }
+
+
     
 }
