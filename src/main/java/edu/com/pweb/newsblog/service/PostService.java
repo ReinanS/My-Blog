@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import edu.com.pweb.newsblog.model.dto.PostOut;
+import edu.com.pweb.newsblog.dto.PostOut;
 import edu.com.pweb.newsblog.respository.PostRepository;
 import lombok.RequiredArgsConstructor;
 

@@ -1,4 +1,4 @@
-package edu.com.pweb.newsblog.model.dto;
+package edu.com.pweb.newsblog.dto;
 
 import java.util.List;
 import java.util.stream.Collectors;
