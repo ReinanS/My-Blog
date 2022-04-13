@@ -25,3 +25,5 @@ spring:
     
 server:
     port: 8090
+    error:
+     include-stacktrace: ON_PARAM

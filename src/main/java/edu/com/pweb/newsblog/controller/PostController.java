@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,15 +16,24 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping("/posts")
 public class PostController {
 
     final PostService postService;
 
     @GetMapping
-    public ResponseEntity<List<PostOut>> listar() {
-
-        List<PostOut> posts = postService.listar();
+    public ResponseEntity<List<PostOut>> list() {
+        List<PostOut> posts = postService.listAll();
         return new ResponseEntity<List<PostOut>>(posts, HttpStatus.OK);
     }    
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<PostOut> findById(@PathVariable Long id) {
+        PostOut post = postService.findById(id);
+        return new ResponseEntity<PostOut>(post, HttpStatus.OK);
+
+
+
+
+    }   
 }
