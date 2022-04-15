@@ -1,7 +1,7 @@
-INSERT INTO USUARIOS(nome, login, senha) VALUES('Aluno',
+INSERT INTO USUARIOS(nome, login, password) VALUES('Aluno',
 'aluno@email.com', '123456');
 
-INSERT INTO USUARIOS(nome, login, senha) VALUES('Manoel',
+INSERT INTO USUARIOS(nome, login, password) VALUES('Manoel',
 'manoelnetom@gmail.com', '123456');
 
 INSERT INTO POSTS(titulo, texto, usuario_id, categoria) VALUES('Dúvida',

@@ -5,7 +5,11 @@ import java.util.stream.Collectors;
 
 import edu.com.pweb.newsblog.model.Usuario;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@NoArgsConstructor
+@Setter
 @Getter
 public class UsuarioOut {
     private Long id;
@@ -15,17 +19,8 @@ public class UsuarioOut {
         this.id = usuario.getId();
         this.nome = usuario.getNome();
     }
-
-    public UsuarioOut(UsuarioIn usuario) {
-        this.id = usuario.getId();
-        this.nome = usuario.getNome();
-    }
-
+    
     public static List<UsuarioOut> converte(List<Usuario> lista) {
-        return lista.stream().map(UsuarioOut::new).collect(Collectors.toList());
-    }
-
-    public static List<UsuarioOut> converteIn(List<UsuarioIn> lista) {
         return lista.stream().map(UsuarioOut::new).collect(Collectors.toList());
     }
 }

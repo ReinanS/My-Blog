@@ -6,10 +6,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
+@NoArgsConstructor
 @Setter
+@Getter
 @Entity(name = "usuarios")
 public class Usuario {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,5 +19,5 @@ public class Usuario {
 
     private String nome;
     private String login;
-    private String senha;
+    private String password;
 }

@@ -5,19 +5,19 @@ import java.util.stream.Collectors;
 
 import edu.com.pweb.newsblog.model.Usuario;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Getter
 public class UsuarioIn {
-    private Long id;
     private String nome;
     private String login;
     private String password;
 
     public UsuarioIn(Usuario usuario) {
-        this.id = usuario.getId();
         this.nome = usuario.getNome();
         this.login = usuario.getLogin();
-        this.password = usuario.getSenha();
+        this.password = usuario.getPassword();
     }
 
     public static List<UsuarioIn> converte(List<Usuario> lista) {

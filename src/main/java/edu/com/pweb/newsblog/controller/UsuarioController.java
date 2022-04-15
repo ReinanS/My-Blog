@@ -2,10 +2,15 @@ package edu.com.pweb.newsblog.controller;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,15 +34,29 @@ public class UsuarioController {
         return new ResponseEntity<List<UsuarioOut>>(usuarios, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/{id}")
+    @PostMapping
+    public ResponseEntity<UsuarioOut> cadastrar(@RequestBody UsuarioIn usuarioIn, UriComponentsBuilder builder) {
+        UsuarioOut usuarioOut = usuarioService.cadastrar(usuarioIn);
+        return new ResponseEntity<UsuarioOut>(usuarioOut, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
     public ResponseEntity<UsuarioOut> findById(@PathVariable Long id) {
         UsuarioOut usuario = usuarioService.findById(id);
         return new ResponseEntity<UsuarioOut>(usuario, HttpStatus.OK);
     }
 
-    // public ResponseEntity<UsuarioOut> cadastrar(@RequestBody UsuarioIn usuarioIn, UriComponentsBuilder builder) {
-    // }
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<UsuarioOut> atualizar(@PathVariable Long id, @RequestBody UsuarioIn usuarioIn) {
+        UsuarioOut usuario = usuarioService.atualizar(id, usuarioIn);
+        return new ResponseEntity<UsuarioOut>(usuario, HttpStatus.OK);
+    }
 
-
-
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<?> deletar(@PathVariable Long id) {
+        usuarioService.deletar(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
