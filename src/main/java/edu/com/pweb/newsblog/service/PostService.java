@@ -9,9 +9,9 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import edu.com.pweb.newsblog.controller.PostIn;
+import edu.com.pweb.newsblog.dto.PostIn;
 import edu.com.pweb.newsblog.dto.PostOut;
-import edu.com.pweb.newsblog.dto.PostUpdate;
+import edu.com.pweb.newsblog.dto.PostUpdateIn;
 import edu.com.pweb.newsblog.model.Post;
 import edu.com.pweb.newsblog.model.Usuario;
 import edu.com.pweb.newsblog.respository.PostRepository;
@@ -73,7 +73,7 @@ public class PostService {
 
         try {
 
-            Optional<Usuario> usuario = usuarioRepository.findById(postIn.getIdUsuario());
+            Optional<Usuario> usuario = usuarioRepository.findById(Long.parseLong(postIn.getIdUsuario()));
             Post post = new Post(postIn.getTitulo(), postIn.getTexto(), usuario.get(), postIn.getCategoria());
 
             postRepository.save(post);
@@ -88,7 +88,7 @@ public class PostService {
 
     }
 
-    public void atualizar(Long id, PostUpdate postUpdate) {
+    public void atualizar(Long id, PostUpdateIn postUpdate) {
 
         try {
             Post post = postRepository.getById(id);

@@ -3,6 +3,7 @@ package edu.com.pweb.newsblog.controller;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,13 +36,13 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioOut> cadastrar(@RequestBody UsuarioIn usuarioIn, UriComponentsBuilder builder) {
+    public ResponseEntity<UsuarioOut> cadastrar(@Valid @RequestBody UsuarioIn usuarioIn, UriComponentsBuilder builder) {
         UsuarioOut usuarioOut = usuarioService.cadastrar(usuarioIn);
         return new ResponseEntity<UsuarioOut>(usuarioOut, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioOut> findById(@PathVariable Long id) {
+    public ResponseEntity<UsuarioOut> findById(@Valid @PathVariable Long id) {
         UsuarioOut usuario = usuarioService.findById(id);
         return new ResponseEntity<UsuarioOut>(usuario, HttpStatus.OK);
     }

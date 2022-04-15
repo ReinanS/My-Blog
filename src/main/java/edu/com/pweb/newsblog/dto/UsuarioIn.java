@@ -1,26 +1,19 @@
 package edu.com.pweb.newsblog.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
-import edu.com.pweb.newsblog.model.Usuario;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @Getter
 public class UsuarioIn {
+
+    @NotBlank
     private String nome;
+
+    @NotBlank @Email
     private String login;
+
+    @NotBlank
     private String password;
-
-    public UsuarioIn(Usuario usuario) {
-        this.nome = usuario.getNome();
-        this.login = usuario.getLogin();
-        this.password = usuario.getPassword();
-    }
-
-    public static List<UsuarioIn> converte(List<Usuario> lista) {
-        return lista.stream().map(UsuarioIn::new).collect(Collectors.toList());
-    }
 }

@@ -3,6 +3,7 @@ package edu.com.pweb.newsblog.controller;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.com.pweb.newsblog.dto.PostIn;
 import edu.com.pweb.newsblog.dto.PostOut;
-import edu.com.pweb.newsblog.dto.PostUpdate;
+import edu.com.pweb.newsblog.dto.PostUpdateIn;
 import edu.com.pweb.newsblog.service.PostService;
 import lombok.RequiredArgsConstructor;
 
@@ -35,7 +37,7 @@ public class PostController {
     }
     
     @PostMapping
-    public ResponseEntity<PostOut> cadastrar(@RequestBody PostIn postIn) {
+    public ResponseEntity<PostOut> cadastrar(@Valid @RequestBody PostIn postIn) {
         PostOut post = postService.cadastrar(postIn);
         return new ResponseEntity<PostOut>(post, HttpStatus.CREATED);
 
@@ -49,7 +51,7 @@ public class PostController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody PostUpdate postIn) {
+    public ResponseEntity<?> atualizar(@Valid @PathVariable Long id, @RequestBody PostUpdateIn postIn) {
         postService.atualizar(id, postIn);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
