@@ -48,15 +48,16 @@ public class UsuarioController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<UsuarioOut> atualizar(@PathVariable Long id, @RequestBody UsuarioIn usuarioIn) {
-        UsuarioOut usuario = usuarioService.atualizar(id, usuarioIn);
-        return new ResponseEntity<UsuarioOut>(usuario, HttpStatus.OK);
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody UsuarioIn usuarioIn) {
+       usuarioService.atualizar(id, usuarioIn);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<?> deletar(@PathVariable Long id) {
         usuarioService.deletar(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

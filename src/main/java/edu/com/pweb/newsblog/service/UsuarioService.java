@@ -71,6 +71,9 @@ public class UsuarioService {
     }
 
     public void deletar(Long id) {
+        // NECESSÁRIO VALIDAÇÃO PARA QUANDO O USUÁRIO ESTIVER ASSOCIADO A ALGUM POST
+
+
         repository.deleteById(id);
     }
 

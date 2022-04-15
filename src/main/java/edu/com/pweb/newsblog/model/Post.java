@@ -11,10 +11,12 @@ import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @Entity(name = "posts")
 public class Post {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,4 +29,11 @@ public class Post {
     private Usuario usuario;
     @Enumerated(EnumType.STRING)
     private Categoria categoria;
+
+    public Post(String titulo, String texto, Usuario usuario, Categoria categoria) {
+        this.titulo = titulo;
+        this.texto = texto;
+        this.usuario = usuario;
+        this.categoria = categoria;
+    }
 }
