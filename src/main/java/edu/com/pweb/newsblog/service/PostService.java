@@ -3,8 +3,6 @@ package edu.com.pweb.newsblog.service;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,38 +13,29 @@ import edu.com.pweb.newsblog.dto.PostUpdateIn;
 import edu.com.pweb.newsblog.model.Post;
 import edu.com.pweb.newsblog.model.Usuario;
 import edu.com.pweb.newsblog.respository.PostRepository;
-import edu.com.pweb.newsblog.respository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 
 
 
 // LÓGICA DE NEGÓCIOS
 
-
-
 @RequiredArgsConstructor
 @Service
 public class PostService {
     private final PostRepository postRepository;
-    private final UsuarioRepository usuarioRepository;
+    private final UsuarioService usuarioService;
 
     public List<PostOut> listAll() {
         return PostOut.converte(postRepository.findAll());
     }
 
+
+    private Post findByIdOrThrowNotFoundRequestException(Long id) {
+        return postRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Post not Found"));
+    }
+
     public PostOut findById(Long id) {
-        PostOut postOut = null;
-
-        try {
-            Post post = postRepository.findById(id).get();
-             postOut = new PostOut(post);
-
-        } catch (NoSuchElementException exception) {
-            System.out.println("OCORREU UMA EXCESSÃO, POST INEXISTENTE");
-            throw new ResponseStatusException(NOT_FOUND);
-        }
-
-        return postOut;
+        return new PostOut(findByIdOrThrowNotFoundRequestException(id));
     }
 
     public List<PostOut> findByTitulo(String titulo) {
@@ -58,7 +47,7 @@ public class PostService {
     }
 
     // ERROR
-
+    // ------------------------------------------------------------------------------------------
 
     public List<PostOut> findByTituloContaining(String titulo) {
         return PostOut.converte(postRepository.findByTituloContaining(titulo));
@@ -68,44 +57,29 @@ public class PostService {
         return PostOut.converte(postRepository.findByTituloStartsWith(titulo));
     }
 
+    // ------------------------------------------------------------------------------------------
+
+
     public PostOut cadastrar(PostIn postIn) {
-        PostOut postOut = null;
+        Usuario usuario = usuarioService.findByIdOrThrowNotFoundRequestException(Long.parseLong(postIn.getIdUsuario()));
+        Post post = new Post(postIn.getTitulo(), postIn.getTexto(), usuario, postIn.getCategoria());
 
-        try {
-
-            Optional<Usuario> usuario = usuarioRepository.findById(Long.parseLong(postIn.getIdUsuario()));
-            Post post = new Post(postIn.getTitulo(), postIn.getTexto(), usuario.get(), postIn.getCategoria());
-
-            postRepository.save(post);
-            postOut = new PostOut(post);
-
-        } catch (NoSuchElementException exception) {
-            System.out.println("OCORREU UMA EXCESSÃO, USUÁRIO INEXISTENTE");
-            throw new ResponseStatusException(NOT_FOUND);
-        }
-
-        return postOut;
+        postRepository.save(post);
+        return new PostOut(post);
 
     }
 
     public void atualizar(Long id, PostUpdateIn postUpdate) {
 
-        try {
-            Post post = postRepository.getById(id);
-
-            post.setTexto(postUpdate.getTexto());
-            post.setTitulo(postUpdate.getTitulo());
-            post.setCategoria(postUpdate.getCategoria());
-
-        } catch (NoSuchElementException exception) {
-            System.out.println("OCORREU UMA EXCESSÃO, POST INEXISTENTE");
-            throw new ResponseStatusException(NOT_FOUND);
-        }
-
+        Post savedPost = findByIdOrThrowNotFoundRequestException(id);
+        Post post = new Post(savedPost.getId(), postUpdate.getTitulo(), postUpdate.getTexto(), savedPost.getUsuario(), postUpdate.getCategoria());
+        
+        postRepository.save(post);
+      
     }
 
     public void deletar(Long id) {
-        postRepository.deleteById(id);
+        postRepository.delete(findByIdOrThrowNotFoundRequestException(id));
     }
 
 }

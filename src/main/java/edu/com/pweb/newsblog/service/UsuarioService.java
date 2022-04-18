@@ -1,7 +1,6 @@
 package edu.com.pweb.newsblog.service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -21,60 +20,35 @@ public class UsuarioService {
     private final UsuarioRepository repository;
     private final ModelMapper modelMapper;
 
-
     public List<UsuarioOut> listaAll() {
         return UsuarioOut.converte(repository.findAll());
     }
 
+    public Usuario findByIdOrThrowNotFoundRequestException(Long id) {
+        return repository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Usuário not Found"));
+    }
+
     public UsuarioOut findById(Long id) {
-        UsuarioOut usuarioOut = null;
-
-        try {
-            Usuario usuario = repository.findById(id).get();
-            usuarioOut = new UsuarioOut(usuario);
-
-        } catch (NoSuchElementException exception) {
-            System.out.println("OCORREU UMA EXCESSÃO, USUARIO INEXISTENTE");
-            throw new ResponseStatusException(NOT_FOUND);
-        }
-
-        return usuarioOut;
+        return new UsuarioOut(findByIdOrThrowNotFoundRequestException(id));
     }
 
     public UsuarioOut cadastrar(UsuarioIn usuarioIn) {
         Usuario usuario = modelMapper.map(usuarioIn, Usuario.class);
         usuario = repository.save(usuario);
         
-        UsuarioOut usuarioOut = new UsuarioOut(usuario);
-
-        return usuarioOut;
+        return new UsuarioOut(usuario);
     }
 
-    public UsuarioOut atualizar(Long id, UsuarioIn usuarioIn) {
-        UsuarioOut usuarioOut = null;
-
-        try {
-            Usuario usuario = repository.getById(id);
-
-            usuario.setNome(usuarioIn.getNome());
-            usuario.setLogin(usuarioIn.getLogin());
-            usuario.setPassword(usuarioIn.getPassword());
-
-            usuarioOut = new UsuarioOut(usuario);
-
-        } catch (NoSuchElementException exception) {
-            System.out.println("OCORREU UMA EXCESSÃO, USUARIO INEXISTENTE");
-            throw new ResponseStatusException(NOT_FOUND);
-        }
-
-        return usuarioOut;
+    public void atualizar(Long id, UsuarioIn usuarioIn) {
+       Usuario savedUsuario = findByIdOrThrowNotFoundRequestException(id);
+       Usuario usuario = new Usuario(savedUsuario.getId(), usuarioIn.getNome(), usuarioIn.getLogin(), usuarioIn.getPassword());
+       
+       repository.save(usuario);
     }
 
     public void deletar(Long id) {
         // NECESSÁRIO VALIDAÇÃO PARA QUANDO O USUÁRIO ESTIVER ASSOCIADO A ALGUM POST
 
-
-        repository.deleteById(id);
+        repository.delete(findByIdOrThrowNotFoundRequestException(id));
     }
-
 }

@@ -2,6 +2,7 @@ package edu.com.pweb.newsblog.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -10,7 +11,9 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
-// http://localhost:{port}/swagger-ui/index.html
+// http://localhost:8090/swagger-ui/index.html
+
+@EnableWebMvc
 @Configuration
 public class SwaggerConfig {
 
@@ -26,7 +29,7 @@ public class SwaggerConfig {
 
     private ApiInfo metaData() {
         return new ApiInfoBuilder()
-            .title("Block de Notícias")
+            .title("Blog de Notícias")
             .description("\"Spring Boot REST API\"")
             .version("1.0.0")
             .license("Apache License Version 2.0")
