@@ -1,10 +1,10 @@
 package edu.com.pweb.newsblog.controller;
 
-import java.util.List;
-
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,11 +35,10 @@ public class PostController {
 
     final PostService postService;
 
-    @ApiOperation(value = "Retorna todos os posts")
+    @ApiOperation(value = "Retorna os posts por página")
     @GetMapping
-    public ResponseEntity<List<PostOut>> listar() {
-        List<PostOut> posts = postService.listAll();
-        return new ResponseEntity<List<PostOut>>(posts, HttpStatus.OK);
+    public Page<PostOut> listar(Pageable pageable) throws Exception {
+        return postService.list(pageable);
     }
     
     @ApiOperation(value = "Salva um post")
@@ -47,7 +46,6 @@ public class PostController {
     public ResponseEntity<PostOut> cadastrar(@Valid @RequestBody PostIn postIn) {
         PostOut post = postService.cadastrar(postIn);
         return new ResponseEntity<PostOut>(post, HttpStatus.CREATED);
-
     }
 
     @ApiOperation(value = "Retorna um post por id")

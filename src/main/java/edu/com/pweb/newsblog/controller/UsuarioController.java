@@ -1,10 +1,10 @@
 package edu.com.pweb.newsblog.controller;
 
-import java.util.List;
-
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,11 +30,10 @@ public class UsuarioController {
     
     final UsuarioService usuarioService;
 
-    @ApiOperation(value = "Retorna todos os usuários")
+    @ApiOperation(value = "Retorna todos os usuários por página")
     @GetMapping
-    public ResponseEntity<List<UsuarioOut>> list() {
-        List<UsuarioOut> usuarios = usuarioService.listaAll();
-        return new ResponseEntity<List<UsuarioOut>>(usuarios, HttpStatus.OK);
+    public Page<UsuarioOut> list(Pageable pageable) {
+        return usuarioService.list(pageable);
     }
 
     @ApiOperation(value = "Salva um usuário")

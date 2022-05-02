@@ -5,6 +5,8 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -14,14 +16,18 @@ import edu.com.pweb.newsblog.model.Usuario;
 import edu.com.pweb.newsblog.respository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class UsuarioService {
     private final UsuarioRepository repository;
     private final ModelMapper modelMapper;
 
     public List<UsuarioOut> listaAll() {
         return UsuarioOut.converte(repository.findAll());
+    }
+
+    public Page<UsuarioOut> list(Pageable pageable) {
+        return UsuarioOut.converteFromPage(repository.findAll(pageable));
     }
 
     public Usuario findByIdOrThrowNotFoundRequestException(Long id) {
@@ -40,10 +46,10 @@ public class UsuarioService {
     }
 
     public void atualizar(Long id, UsuarioIn usuarioIn) {
-       Usuario savedUsuario = findByIdOrThrowNotFoundRequestException(id);
-       Usuario usuario = new Usuario(savedUsuario.getId(), usuarioIn.getNome(), usuarioIn.getLogin(), usuarioIn.getPassword());
+    //    Usuario savedUsuario = findByIdOrThrowNotFoundRequestException(id);
+    //    Usuario usuario = new Usuario(savedUsuario.getId(), usuarioIn.getNome(), usuarioIn.getLogin(), usuarioIn.getPassword());
        
-       repository.save(usuario);
+    //    repository.save(usuario);
     }
 
     public void deletar(Long id) {

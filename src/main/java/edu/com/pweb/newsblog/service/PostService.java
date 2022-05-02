@@ -4,6 +4,8 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -27,6 +29,10 @@ public class PostService {
 
     public List<PostOut> listAll() {
         return PostOut.converte(postRepository.findAll());
+    }
+
+    public Page<PostOut> list(Pageable pageable) {
+        return PostOut.convertFromPage(postRepository.findAll(pageable));
     }
 
 
