@@ -3,6 +3,8 @@ package edu.com.pweb.newsblog.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+
 import edu.com.pweb.newsblog.model.Usuario;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,5 +24,9 @@ public class UsuarioOut {
     
     public static List<UsuarioOut> converte(List<Usuario> lista) {
         return lista.stream().map(UsuarioOut::new).collect(Collectors.toList());
+    }
+
+    public static Page<UsuarioOut> converteFromPage(Page<Usuario> page) {
+        return page.map(UsuarioOut::new);
     }
 }
